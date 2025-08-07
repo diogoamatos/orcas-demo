@@ -1,16 +1,17 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
-# from src.orcamentos.models import Orcamento
+if TYPE_CHECKING:
+    from src.orcamentos.models import Orcamento
 
 class ClienteBase(SQLModel):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    nome: str
+    email: Optional[str] = None
 
 
 class Cliente(ClienteBase, table=True):
-    nome: str
-    email: Optional[str] = None
+    id: int | None = Field(default=None, primary_key=True)
 
     orcamentos: List["Orcamento"] = Relationship(back_populates="cliente")

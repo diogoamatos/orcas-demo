@@ -5,7 +5,7 @@ from sqlmodel import select
 
 from src.clientes.models import Cliente
 from src.database import SessionDep
-from src.orcamentos.models import ItemOrcamento, Orcamento
+from src.orcamentos.models import ItemOrcamento, OrcamentoBase, Orcamento
 from src.orcamentos.schemas import OrcamentoRead
 from src.produtos.models import Produto
 
@@ -15,7 +15,7 @@ orcamentos_router = APIRouter()
 # ---------------- ORÇAMENTOS ----------------
 
 
-@orcamentos_router.post("/", response_model=Orcamento)
+@orcamentos_router.post("/", response_model=OrcamentoBase)
 def criar_orcamento(
     cliente_id: int,
     itens: List[dict],  # [{'produto_id': 1, 'quantidade': 2}]
@@ -49,10 +49,10 @@ def listar_orcamentos(
     session: SessionDep,
     cliente_id: Optional[int] = Query(None),
 ):
-    query = select(Orcamento)
+    query = select(OrcamentoBase)
 
     if cliente_id:
-        query = query.where(Orcamento.cliente_id == cliente_id)
+        query = query.where(OrcamentoBase.cliente_id == cliente_id)
 
     orcamentos = session.exec(query).all()
 
@@ -65,7 +65,7 @@ def listar_orcamentos(
 
 @orcamentos_router.get("/{orcamento_id}", response_model=OrcamentoRead)
 def obter_orcamento(orcamento_id: int, session: SessionDep):
-    orcamento = session.get(Orcamento, orcamento_id)
+    orcamento = session.get(OrcamentoBase, orcamento_id)
     if not orcamento:
         raise HTTPException(status_code=404, detail="Orçamento não encontrado")
 

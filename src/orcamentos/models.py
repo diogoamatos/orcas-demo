@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List, Optional
+from typing import TYPE_CHECKING, List, Optional
 
 from sqlmodel import Field, Relationship, SQLModel
 
@@ -7,13 +7,13 @@ from src.clientes.models import Cliente
 from src.produtos.models import Produto
 
 
-class OorcamentoBase(SQLModel):
-    id: Optional[int] = Field(default=None, primary_key=True)
-
-
-class Orcamento(OorcamentoBase, table=True):
+class OrcamentoBase(SQLModel):
     data: datetime = Field(default_factory=datetime.utcnow)
     cliente_id: Optional[int] = Field(default=None, foreign_key="cliente.id")
+
+
+class Orcamento(OrcamentoBase, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
 
     cliente: Optional[Cliente] = Relationship(back_populates="orcamentos")
     itens: List["ItemOrcamento"] = Relationship(back_populates="orcamento")
