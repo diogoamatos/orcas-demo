@@ -26,6 +26,7 @@ def criar_orcamento(
     session.refresh(orcamento)
 
     for item in itens:
+        print(f"item {item}")
         produto = session.get(Produto, item["produto_id"])
         if not produto:
             raise HTTPException(status_code=404, detail="Produto não encontrado")

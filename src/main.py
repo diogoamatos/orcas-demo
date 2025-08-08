@@ -14,3 +14,8 @@ app.include_router(produtos_router, prefix="/produtos", tags=["Produtos"])
 @app.on_event("startup")
 def on_startup():
     create_db_and_tables()
+
+
+@app.get("/")
+async def index():
+    return {"message": "Hello World"}
