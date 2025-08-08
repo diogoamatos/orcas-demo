@@ -59,7 +59,7 @@ def listar_orcamentos(
     # Garantir que os itens estão carregados para calcular o total
     for orc in orcamentos:
         orc.itens  # força o relacionamento a carregar
-
+        print(f"orc.itens") # força o relacionamento a carregar
     return orcamentos
 
 
